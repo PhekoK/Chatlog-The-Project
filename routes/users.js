@@ -64,5 +64,16 @@ router.delete('/:id', (req, res) => {
         });
     });
 });
+
+
+
+/** GET USERS BY ID DURING REGISTRATION */
+router.get('/views/registration', (req, res) => {
+  const user = new User();
+  console.log(this.user);
+  User.findById(req.params.id, (err, data) => {
+
+  });
+});
  
 module.exports = router;
