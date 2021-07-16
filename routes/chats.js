@@ -7,9 +7,11 @@ router.get('/', function(req, res, next) {
    // res.send('Chats Index');
   //res.send('Hello World');
   Chat.find((err, data) => {
-    res.render('../views/users/chats', 
+      if (err) throw err;
+    /* res.render('../views/users/chats', 
         { title: 'User List', chats: data }
-    );
+    ); */
+    res.send(data);
   })
   
 });
@@ -18,8 +20,10 @@ router.get('/', function(req, res, next) {
 router.get('/chats', function(req, res, next) {
   Chat.find((err, data) => {
     if (err) throw err;
-    res.render('../views/users/chats', { title: 'Select A Chat', chats: data });
-  });
+    //res.render('../views/users/chats', { title: 'Select A Chat', chats: data });
+    res.send(data);  
+    console.log(data);
+});
   
   //res.send('Hello World');
 });
@@ -33,18 +37,23 @@ router.get('/chats', function(req, res, next) {
     created_at:  date
   }
 
+  {
+    "user": ["60f0f283224bda1bc8099f93"],
+      "msg": "Hi :)"
+}
+
  */
 
 /* /** POST Request */
-/* router.post('/chats', function(req, res, next) {
-  console.log(req.body);
+router.post('/chats', function(req, res, next) {
+  //console.log(req.body);
   Chat.create(req.body, (err) => {
       if(err) throw err;
       //io.emit('chat', req.body);
-      //res.send(req.body);
+       res.send(req.body);
       console.log('Chat Saved Successfully');
   });
-}); */
+});
  
 /* GET Individual Chats By ID. */
 router.get('/something', function(req, res, next) {

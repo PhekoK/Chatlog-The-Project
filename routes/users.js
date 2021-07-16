@@ -2,20 +2,35 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
 
-/* GET users listing. */
+/* GET ALL users listing. */
 router.get('/', function(req, res, next) {
   User.find((err, data) => {
     if (err) throw err;
-    //res.send(data);
-    res.render('../views/users/users', 
+    res.send(data);
+    /* res.render('../views/users/users', 
         { title: 'User List', users: data }
-    );
-  })
+    ); */
+  });
 });
+
+
+
+/** GET Users by Id http://localhost:3000/users/:id */
+router.get('/:id', (req, res) => {
+    User.findById(req.params.id, (err, data) => {
+        if (err) throw err;
+        if(!data)
+            return res.status(404).send("User Not Found With The Given Id");
+        res.send(data);
+    });
+});
+
+
 
 /**POST Request to insert new data - for Registration User */
 /* POST users listing. */
 /**
+ *    Url http://localhost:3000/users
  * {
     "username": "User 1",
     "email": "user1@user.com",
@@ -26,36 +41,28 @@ router.get('/', function(req, res, next) {
     "is_active": true
 }
  */
-
-router.post('/save', function(req, res, next) {
-  var user = new User(req.body);
+router.post('/', (req, res) => {
+  //var user = new User(req.body);
   User.create(req.body, (err, data) => {
     if (err) throw err;
-    //res.send(data);
-    res.redirect('/');
+    res.send(data);
+    //res.redirect('/');
   })
 });
 
-/* GET login page. */
-router.get('/login', function(req, res, next) {
-  res.render('../views/users/login', { title: 'Login Page' });
-  //res.send('Hello World');
-});
 
-/* GET Registration page. */
-router.get('/register', function(req, res, next) {
-  res.render('../views/users/registration', { title: 'Registration Page' });
-  //res.send('Hello World');
-});
 
-/* GET My List of Friends/Users in Contacts page. */
-router.get('/contacts', function(req, res, next) {
-  User.find((err, data) => {
-    if (err) throw err;
-    res.render('../views/users/contacts', { title: 'Select Chat Room', friends: data });
-  });
-  
-  //res.send('Hello World');
+/** Delete User by Id */
+router.delete('/:id', (req, res) => {
+    User.findById(req.params.id, (err, data) => {
+        if (err) throw err;
+        if (!data)
+             return res.status(404).send("User doesn't exist with given Id");
+        User.findByIdAndDelete(req.params.id, (err, data) => {
+            if (err) throw err;
+            res.send(data);
+        });
+    });
 });
-
+ 
 module.exports = router;

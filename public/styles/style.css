@@ -15,9 +15,16 @@
 }
 
 body {
-	font-family: 'Roboto', sans-serif;
-	font-size: 16px;
-	background: var(--light-color);
+	font-family: Poppins-Regular, sans-serif;
+	/*font-size: 16px;
+	/*background: var(--light-color);*/
+    height: 100%;
+    background: #9053c7;
+  background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
+  background: -o-linear-gradient(-135deg, #c850c0, #4158d0);
+  background: -moz-linear-gradient(-135deg, #c850c0, #4158d0);
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
+
 	margin: 20px;
 }
 
@@ -45,11 +52,12 @@ a {
 	background: #fff;
 	margin: 30px auto;
 	overflow: hidden;
+    border-radius: 15px;
 }
 
 .chat-header {
-	background: var(--dark-color-a);
-	color: #fff;
+	background: white;
+	color: black;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	padding: 15px;
@@ -64,8 +72,8 @@ a {
 }
 
 .chat-sidebar {
-	background: var(--dark-color-b);
-	color: #fff;
+	background: white;
+	color: black;
 	padding: 20px 20px 60px;
 	overflow-y: scroll;
 }
@@ -94,8 +102,8 @@ a {
 .chat-messages .message {
 	padding: 10px;
 	margin-bottom: 15px;
-	background-color: var(--light-color);
-	border-radius: 5px;
+	background-color: darkgray;
+	border-radius: 25px;
 	overflow-wrap: break-word;
 }
 
@@ -113,7 +121,7 @@ a {
 
 .chat-form-container {
 	padding: 20px 30px;
-	background-color: var(--dark-color-a);
+	background-color: darkgray;
 }
 
 .chat-form-container form {
