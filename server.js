@@ -23,18 +23,32 @@ mongoose.connect('mongodb://localhost:27017/projectdb',
    .catch((error) => { console.log(error); })
 
 // HANDLING WEB SOCKETS
+users = [];
+
 io.on('connection', (socket) => {
     console.log('A Socket is Connected');
+
+    socket.on('setUsername', function (data) {
+        console.log(data);
+        users.push(data);
+        socket.emit('userSet', { username: data });
+    });
+
+    socket.on('msg', function (data) {
+        //Broadcast message to everyone connected to the socket
+        io.sockets.emit('newmsg', data);
+    });
 
     // Invoked when user gets diconnected
     socket.on('disconnect', () => {
         console.log('A Socket is Disconnected!!!');
-    })
+    });
 })
 
 app.use('/users', usersRouter);
 app.use('/chats', chatsRouter);
 
+//Http server running...
 http.listen(3000, () => {
     console.log('Server is running at port 3000!!');
 })
