@@ -80,13 +80,14 @@ app.post('/users', (req, res) => {
 
 
 //User Login
-app.post('/users/login', function (req, res) {
+app.post('/users/:id', function (req, res) {
     console.log(req.body);
     User.findOne({ email: req.body.email, password: req.body.password }, ( err, data) => {
         if (err) throw err;
         if (!data) return res.status(404).send("User does not exist with the given email");
-        //if(data) return res.status(200).send("User Successfully logged in");
+        //if (data) res.redirect('/views/chat.html');
         res.send(data);
+
     })
 })
 
