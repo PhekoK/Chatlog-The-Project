@@ -29,7 +29,8 @@
 			socket.on('userSet', function (data){
 				user = data.username;
 				//----------------START-------------------------------//
-				document.body.innerHTML = '<div class="chat-container">\
+				document.body.innerHTML = ' <div class="container"> \
+				<div class="chat-container">\
       <header class="chat-header">\
         <h1> OPEN Chat</h1>\
         <a href="./chatmain.html" class="btn btn-danger">Leave Chat</a>\
@@ -49,6 +50,7 @@
           <button class="btn" name="button" type="button" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button> \
         </form> \
       </div> \
+   </div>\
    </div>';
 
 	//class="chat-messages" --> div message-container
@@ -69,41 +71,47 @@
 		}
 	})
 
+	function logout(){
+
+	}
 
 		</script>
 
 		<!--Body-->
 
-		<div class="join-container">
-			<header class="join-header">
-				<h1> OPEN Chat</h1>
-			</header>
-			<main class="join-main">
-				<form action=""> <!--action="chat.html"-->
-					<div class="form-control">
-						<label for="username">Username</label>
-						<input
-							type="text"
-							name="name"
-							id="name"
-							placeholder="Your Username *"
-							required
-						/>
-					</div>
-					<div class="form-control">
-						<label for="room">Choose Group</label>
-						<select name="room" id="room">
-							<option value="MERN">MERN Stack Unofficial Group</option>
-							<option value="Work">Work</option>
-							<option value="PHP">PHP</option>
-							<option value="C#">C#</option>
-							<option value="Ruby">Ruby</option>
-							<option value="Java">Java</option>
-						</select>
-					</div>
-					<button type="button" class="btn" onclick="setUserName()">Join Chat</button> <!--Changed from submit-->
-				</form>
-			</main>
+		<div class="container">
+			<div class="join-container">
+				<header class="join-header">
+					<h1> Welcome to OPEN Chat</h1>
+				</header>
+				<main class="join-main">
+					<form action=""> <!--action="chat.html"-->
+						<div class="form-control">
+							<label for="username">Username</label>
+							<input
+								type="text"
+								name="name"
+								id="name"
+								placeholder="Your Username *"
+								required
+							/>
+						</div>
+						<div class="form-control">
+							<label for="room">Choose Chat Room You would like to join</label>
+							<select name="room" id="room">
+								<option value="MERN">MERN Stack Unofficial Group</option>
+								<option value="Work">Work</option>
+								<option value="SofwareDev"> <</>Software Dev </>> </option>
+								<option value="DataScience#">Data Science#</option>
+							</select>
+						</div>
+						<button type="button" class="btn" onclick="setUserName()">Join Chat</button> <!--Changed from submit-->
+						<a href="/" type="button" class="btn" onclick="logout()">Sign Out</a>
+					</form>
+				</main>
+			</div>
 		</div>
+
+		
 	</body>
 </html>

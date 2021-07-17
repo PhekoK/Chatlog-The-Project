@@ -13,8 +13,11 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 
 //var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+//var usersRouter = require('./routes/users');
 var chatsRouter = require('./routes/chats');
+
+//Models
+var User = require('./Models/User');
 
 //Connect to Database
 mongoose.connect('mongodb://localhost:27017/projectdb',
@@ -43,9 +46,32 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('A Socket is Disconnected!!!');
     });
+});
+
+//User Registration
+app.post('/users', (req, res) => {
+    console.log(req.body);
+    User.create(req.body, (err) => {
+        if (err) throw err;
+        //io.emit('user', req.body);
+        console.log("User Registered Successfully");
+    })
+
 })
 
-app.use('/users', usersRouter);
+
+//User Login
+app.post('/users/login', function (req, res) {
+    console.log(req.body);
+    User.findOne({ email: req.body.email, password: req.body.password }, ( err, data) => {
+        if (err) throw err;
+        if (!data) return res.status(404).send("User does not exist with the given email");
+        //if(data) return res.status(200).send("User Successfully logged in");
+        res.send(data);
+    })
+})
+
+//app.use('/users', usersRouter);
 app.use('/chats', chatsRouter);
 
 //Http server running...
