@@ -87,19 +87,10 @@
 
         $(() => {
             $('#btnLogin').click(() => {
-                var user = {
-                    email: $('#txtEmail').val(),
-                    password: $('#txtPassword').val()
-                };
-                postUser(user)
+                
             })
         })
 
-        function postUser(user){
-            //console.log(user);
-            $.post('http://localhost:3000/users/login', user)
-            //lo
-        }
 
     </script>
 

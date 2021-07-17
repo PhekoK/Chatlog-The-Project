@@ -82,27 +82,17 @@ app.post('/users', (req, res) => {
 
 
 //User Login
-app.post('/users/login', function (req, res) {
-    console.log(req.body);
+app.post('/', (req, res) => {
 
-    User.find({ email: req.body.email, password: req.body.password }, ( err, data) => {
-         if (err) throw err;
-        if ( !data) return res.status(404).send("User Not Found");
-        //if (data) res.redirect('/views/chat.html');
-        //res.send(data);
-        if(data) res.redirect('/views/chat.html');
-        console.log(req.body.email +" : " + req.body.password ); 
-
-    })
-})
+});
 
 /* app.post('/users/login', function (req, res) {
     console.log("This has run");
     console.log(req.body);
-    var email = req.body.email;
-    var password = req.body.password;
     User.find((err, data) => {
         
+    var email = req.body.email;
+    var password = req.body.password;
         if( err) throw err;
         data.forEach(user => {
             if (user.email == email && user.password == password){
