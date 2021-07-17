@@ -28,9 +28,18 @@ mongoose.connect('mongodb://localhost:27017/projectdb',
 
 // HANDLING WEB SOCKETS
 users = [];
-
+var roomno = 1;
 io.on('connection', (socket) => {
     console.log('A Socket is Connected');
+
+    //Increase roomno 2 clients are present in a room.
+    if (io.sockets.adapter.rooms["room-" + roomno]
+        && io.sockets.adapter.rooms["room-" + roomno].length > 1) roomno++;
+    socket.join("room-" + roomno);
+
+    //Send this event to everyone in the room.
+    io.sockets.in("room-" + roomno)
+        .emit('connectToRoom', "Room " + roomno);
 
     socket.on('setUsername', function (data) {
         console.log(data);
@@ -45,6 +54,14 @@ io.on('connection', (socket) => {
 
     // Invoked when user gets diconnected
     socket.on('disconnect', () => {
+        /* var user = userLeave(socket.id);
+
+        if (user) {
+            io.to(user.room).emit(
+                'message', 
+                formatMessage("OPEN Chat", `${user.username} has left the chat`)
+            )
+        } */
         console.log('A Socket is Disconnected!!!');
     });
 });
@@ -89,9 +106,6 @@ app.get('/chats', (req, res) => {
         res.send(chats);
     })
 })
-
-//app.use('/users', usersRouter);
-//app.use('/chats', chatsRouter);
 
 //Http server running...
 http.listen(3000, () => {
