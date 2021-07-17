@@ -2,11 +2,13 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 /* app.use(express.static(__dirname));
@@ -82,15 +84,37 @@ app.post('/users', (req, res) => {
 //User Login
 app.post('/users/login', function (req, res) {
     console.log(req.body);
-    User.findOne({ email: req.body.email, password: req.body.password }, ( err, data) => {
+
+    User.find({ email: req.body.email, password: req.body.password }, ( err, data) => {
          if (err) throw err;
         if ( !data) return res.status(404).send("User Not Found");
         //if (data) res.redirect('/views/chat.html');
-        res.send(data);
+        //res.send(data);
+        if(data) res.redirect('/views/chat.html');
         console.log(req.body.email +" : " + req.body.password ); 
 
     })
 })
+
+/* app.post('/users/login', function (req, res) {
+    console.log("This has run");
+    console.log(req.body);
+    var email = req.body.email;
+    var password = req.body.password;
+    User.find((err, data) => {
+        
+        if( err) throw err;
+        data.forEach(user => {
+            if (user.email == email && user.password == password){
+                res.status(200).json({"found": "yes"});
+                //res.redirect("/views/chat.html");
+            } else {
+                res.status(404).json({"found":"no"});
+            }
+        });
+
+    })
+}) */
 
 //---------------------CHATS--------------------//
 app.post('/chats' , (req, res) => {
