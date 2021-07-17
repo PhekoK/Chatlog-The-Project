@@ -14,10 +14,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //var indexRouter = require('./routes/index');
 //var usersRouter = require('./routes/users');
-var chatsRouter = require('./routes/chats');
+//var chatsRouter = require('./routes/chats');
 
 //Models
 var User = require('./Models/User');
+var Chat = require('./Models/Chat');
 
 //Connect to Database
 mongoose.connect('mongodb://localhost:27017/projectdb',
@@ -48,6 +49,7 @@ io.on('connection', (socket) => {
     });
 });
 
+//-------------USERS-----------------------
 //User Registration
 app.post('/users', (req, res) => {
     console.log(req.body);
@@ -71,8 +73,25 @@ app.post('/users/login', function (req, res) {
     })
 })
 
+//---------------------CHATS--------------------//
+app.post('/chats' , (req, res) => {
+    console.log(req.body);
+    Chat.create(req.body, (err) => {
+        if (err) throw err;
+        io.emit('chat', req.body);
+        console.log('Chat saved in db Successfully');
+    })
+})
+
+app.get('/chats', (req, res) => {
+    Chat.find((err, chats) => {
+        if (err) throw err;
+        res.send(chats);
+    })
+})
+
 //app.use('/users', usersRouter);
-app.use('/chats', chatsRouter);
+//app.use('/chats', chatsRouter);
 
 //Http server running...
 http.listen(3000, () => {
