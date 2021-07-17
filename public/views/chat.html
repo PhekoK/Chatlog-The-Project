@@ -51,6 +51,7 @@
     var roomname;
     socket.on('connectToRoom', function (data) {
       $('#room-name').append(`<p>${data}</p>`);
+     // return $('#room-name'); 
     });
 
     function userLeave(id) {
@@ -79,7 +80,7 @@
 
     function postChat(chat) {
       $.post('http://localhost:3000/chats', chat)
-      //location.reload();
+      location.reload();
     }
     function getChats() {
       $.get('/chats', (chats) => {
