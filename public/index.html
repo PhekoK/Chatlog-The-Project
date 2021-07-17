@@ -49,8 +49,8 @@
                         </div>
 
                         <div class="container-login100-form-btn">
-                            <button class="login100-form-btn" type="button" id="btnLogin">
-                                Login
+                            <button class="login100-form-btn" type="button" id="btnLogin" name="btnLogin">
+                                Log in
                             </button>
                            <!--  <a a  class="login100-form-btn" id="btnLogin">Login</a> -->
                         </div>
@@ -87,9 +87,20 @@
 
         $(() => {
             $('#btnLogin').click(() => {
+                var user = {
+                    email: $('#txtEmail').val(),
+                    password: $('txtPassword').val()
+                };
+                loginUser(user)
                 
             })
         })
+
+        function loginUser(user) {
+            //console.log(user);
+            $.post('http://localhost:3000/users', this.user);
+            location.reload();
+        }
 
 
     </script>

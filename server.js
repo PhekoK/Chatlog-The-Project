@@ -24,9 +24,9 @@ var Chat = require('./Models/Chat');
 
 //Connect to Database
 mongoose.connect('mongodb://localhost:27017/projectdb',
-   { useNewUrlParser: true, useUnifiedTopology: true})
-   .then(() => { console.log('Connected To Database!!!'); })
-   .catch((error) => { console.log(error); })
+    { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => { console.log('Connected To Database!!!'); })
+    .catch((error) => { console.log(error); })
 
 // HANDLING WEB SOCKETS
 users = [];
@@ -71,10 +71,11 @@ io.on('connection', (socket) => {
 //-------------USERS-----------------------
 //User Registration
 app.post('/users', (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     User.create(req.body, (err) => {
         if (err) throw err;
         //io.emit('user', req.body);
+        console.log(req.body);
         console.log("User Registered Successfully");
     })
 
@@ -82,8 +83,22 @@ app.post('/users', (req, res) => {
 
 
 //User Login
-app.post('/', (req, res) => {
+app.post('users/', (req, res) => {
+    console.log(req.body);
 
+    User.find((err, data) => {
+        console.log(req.body);
+        if (err) throw err;
+        for (const user of data) {
+            var email = req.body.email;
+            var password = req.body.password;
+            if (user.email == email && user.password == password) {
+                res.status(200).json({ "found": true });
+            } else {
+                res.status(200).json({ "found": false })
+            }
+        }
+    })
 });
 
 /* app.post('/users/login', function (req, res) {
@@ -107,7 +122,7 @@ app.post('/', (req, res) => {
 }) */
 
 //---------------------CHATS--------------------//
-app.post('/chats' , (req, res) => {
+app.post('/chats', (req, res) => {
     console.log(req.body);
     Chat.create(req.body, (err) => {
         if (err) throw err;
