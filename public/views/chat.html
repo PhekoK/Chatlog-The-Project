@@ -109,7 +109,7 @@
 
     function outputMessage(chat) {
       $.post('http://localhost:3000/chats', chat)
-      location.reload();
+     // location.reload();
     }
     function getChats() {
       $.get('/chats', (chats) => {
@@ -121,7 +121,7 @@
       $('#btnLogout').click(() => {
         //localStorage.setItem('isLoggedIn', 'false');
         //localStorage.removeItem(user);
-        
+
         window.location = "../index.html";
 
       })

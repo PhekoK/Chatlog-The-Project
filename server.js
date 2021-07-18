@@ -4,6 +4,9 @@ var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
+//Password Handler
+const bcrypt = require('bcrypt');
+
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
@@ -65,18 +68,21 @@ io.on('connection', (socket) => {
 //------------------------------------------------------------------------
 
 //testing
-  app.get('/login', function(req, res, next) {
-    User.find((err, data) => {
+const some = [];
+  app.get('/login', function(req, res) {
+    /* User.find((err, data) => {
       if (err) throw err;
       res.send(data);
 
-    });
+    }); */
+
+    res.json(some);
   });
 
 
 //-------------USERS-----------------------
 //User Registration
-app.post('/users', (req, res) => {
+app.post('/register', (req, res) => {
     //console.log(req.body);
     User.create(req.body, (err) => {
         if (err) throw err;
@@ -87,8 +93,48 @@ app.post('/users', (req, res) => {
 });
 
 app.post('/login', function(req, res) {
+    
+    console.log(req.body);
+    
+    //let { email, password } = req.body;
 
-})
+    var email = req.body.email;
+    var password = req.body.password;
+
+    if(email == "" || password == ""){
+        res.json({
+            status: "FAILED",
+            message: "Empty Email/Password field."
+        })
+        //If none of the values are empty.. start with login process...
+    } else {
+        //Check if user exists
+        User.find({email})
+        .then(data => {
+            if(!data) {
+                //User does not exist
+                res.json({
+                    status: "FAILED",
+                    message: "User does not exist with given email id"
+                })
+            } else {
+                res.json({
+                    status: "SUCCESS",
+                    message: "Logged in",
+                    data: data
+                })
+            }
+        }) 
+        .catch((err) => {
+            res.json({
+                status: "FAILED",
+                message: "Error occured while checking for existing user"
+            })
+        })
+    }
+
+
+});
 
 /* app.post('/login', function(req, res, next) {
     var email = req.body.email;

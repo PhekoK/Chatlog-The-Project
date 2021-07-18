@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="container-login100-form-btn">
-                            <button class="login100-form-btn" type="button" onclick="userLogin()" id="btnLogin" name="btnLogin">
+                            <button class="login100-form-btn" type="button"  id="btnLogin" name="btnLogin">
                                 Log in
                             </button>
                            <!--  <a a  class="login100-form-btn" id="btnLogin">Login</a> -->
@@ -88,13 +88,18 @@
         //Validate user
 
         $(() => {
-            $('btnLogin').click(() => {
-                
+            $('#btnLogin').click(() => {
+                var checkExiUser = {
+                    email: $('#txtEmail').val(),
+                    password: $('#txtPassword').val()
+                };
+                userLogin(checkExiUser);
             })
         })
 
-        function userLogin() {
-
+        function userLogin(user) {
+            $.post('http://localhost:3000/login', user)
+            window.location = "/views/chat.html";
         }
 
 
