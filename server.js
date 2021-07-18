@@ -28,7 +28,9 @@ mongoose.connect('mongodb://localhost:27017/projectdb',
     .catch((error) => { console.log(error); })
 
 // HANDLING WEB SOCKETS
-users = [];
+//users = [];
+
+const users = {};
 var roomno = 1;
 io.on('connection', (socket) => {
     console.log('New Socket is Connected');
@@ -36,8 +38,17 @@ io.on('connection', (socket) => {
     //Welcomes current user --> 
     socket.emit('welcome-message', 'Welcome to OPEN Chat');
 
-    //broadcast when a user connects
-    socket.broadcast.emit('join-message', 'A user has joined the room');
+
+   // socket.broadcast.emit('join-message', "A new user has joined the chat");
+
+    socket.on('new-user', name => {
+        users[socket.id] = name;
+        //socket.broadcast.emit('user-connected', name)
+
+        //broadcast when a user connects
+        socket.broadcast.emit('join-message', name);
+
+    })
 
     //Increase roomno 2 clients are present in a room.
     if (io.sockets.adapter.rooms["room-" + roomno]
@@ -61,7 +72,9 @@ io.on('connection', (socket) => {
 
     // Invoked when user gets diconnected
     socket.on('disconnect', () => {
-        io.emit('message', 'A user has left the room');
+       // io.emit('message', 'A user has left the room');
+       socket.broadcast.emit('user-disconnected' , users[socket.id])
+       delete users[socket.id]
     });
 });
 

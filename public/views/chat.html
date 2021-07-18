@@ -58,15 +58,30 @@
     //const messageEle = document.getElementById('message');
     const joinMessageContainer = document.getElementById('notify-other-user');
 
+    const name = prompt('What is your username??');
+    appendMessage('You joined the chat');
+
+    socket.emit('new-user', name)
+
     socket.on('welcome-message', data => {
       console.log(data);
       $('#noti-container').append(`--------------------------<p id="noti-container">${data}</p>---------------------------- <br>`);
      
     });
 
-    socket.on('join-message', data => {
+   /*  socket.on('join-message', data => {
       //$('#notify-other-user').append(`<p id="join-message">------${data}------</p>`);
       appendMessage(data);
+    
+    }); */
+
+    socket.on('user-disconnected', data => {
+      appendMessage(`${name} left the room`);
+    })
+
+    socket.on('join-message', name => {
+      //$('#notify-other-user').append(`<p id="join-message">------${data}------</p>`);
+      appendMessage(`${name} joined the session`);
     
     });
 
@@ -91,6 +106,12 @@
     socket.on('connectToRoom', function (room) {
       $('#room-name').append(`<p>${room}</p>`);
     });
+
+    /* socket.on('connectToRoom', room => {
+      
+      appendMessage(`You are in room ${room}`);
+    
+    }); */
 
     
 

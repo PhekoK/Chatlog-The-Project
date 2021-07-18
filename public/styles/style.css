@@ -37,7 +37,7 @@ body {
 	font-stretch: wider;
 }
 
-#join-message{
+#join-message p{
 	text-align: center;
 	color: #333333;
 	text-decoration-style: wavy;
