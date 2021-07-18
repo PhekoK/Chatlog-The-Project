@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="container-login100-form-btn">
-                            <button class="login100-form-btn" type="button" id="btnLogin" name="btnLogin">
+                            <button class="login100-form-btn" type="button" onclick="userLogin()" id="btnLogin" name="btnLogin">
                                 Log in
                             </button>
                            <!--  <a a  class="login100-form-btn" id="btnLogin">Login</a> -->
@@ -65,7 +65,7 @@
                         </div>
 
                         <div class="text-center p-t-136">
-                            <a class="txt2" routerLink="/registration" href="./views/registration.html">
+                            <a class="txt2"  href="./views/registration.html">
                                 Create your Account
                                 <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                             </a>
@@ -81,25 +81,20 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <script src="/socket.io/socket.io.js"></script>
+   < <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
 
+        //Validate user
+
         $(() => {
-            $('#btnLogin').click(() => {
-                var user = {
-                    email: $('#txtEmail').val(),
-                    password: $('txtPassword').val()
-                };
-                loginUser(user)
+            $('btnLogin').click(() => {
                 
             })
         })
 
-        function loginUser(user) {
-            //console.log(user);
-            $.post('http://localhost:3000/login', user);
-            window.location = "views/chat.html";
+        function userLogin() {
+
         }
 
 

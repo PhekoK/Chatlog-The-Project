@@ -73,8 +73,24 @@ io.on('connection', (socket) => {
     });
   });
 
-  /* GET One users listing. */
-app.post('/login', function(req, res, next) {
+
+//-------------USERS-----------------------
+//User Registration
+app.post('/users', (req, res) => {
+    //console.log(req.body);
+    User.create(req.body, (err) => {
+        if (err) throw err;
+        console.log(req.body);
+        res.status(201).send();
+        console.log("User Registered Successfully");
+    })
+});
+
+app.post('/login', function(req, res) {
+
+})
+
+/* app.post('/login', function(req, res, next) {
     var email = req.body.email;
     var password = req.body.password
     User.find((err, data) => {
@@ -91,22 +107,8 @@ app.post('/login', function(req, res, next) {
           } 
           
      // }
-      
     });
-  });
-
-//-------------USERS-----------------------
-//User Registration
-app.post('/users', (req, res) => {
-    //console.log(req.body);
-    User.create(req.body, (err) => {
-        if (err) throw err;
-        //io.emit('user', req.body);
-        console.log(req.body);
-        console.log("User Registered Successfully");
-    })
-
-})
+  }); */
 
 
 //User Login
@@ -120,33 +122,15 @@ app.post('/users', (req, res) => {
             var email = req.body.email;
             var password = req.body.password;
             if (user.email == email && user.password == password) {
+                console.log("Working")
                 res.status(200).json({ "found": true });
             } else {
+                console.log("Running")
                 res.status(200).json({ "found": false })
             }
         }
     })
 }); */
-
-/* app.post('/login', function (req, res) {
-    console.log("This has run");
-    console.log(req.body);
-    User.find((err, data) => {
-        
-    var email = req.body.email;
-    var password = req.body.password;
-        if( err) throw err;
-        data.forEach(User => {
-            if (User.email == email && User.password == password){
-                res.status(200).json({"found": "yes"});
-                //res.redirect("/views/chat.html");
-            } else {
-                res.status(404).json({"found":"no"});
-            }
-        });
-
-    })
-}) */
 
 //---------------------CHATS--------------------//
 app.post('/chats', (req, res) => {

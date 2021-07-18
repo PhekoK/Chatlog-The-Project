@@ -16,7 +16,7 @@
   <div class="chat-container">
     <header class="chat-header">
       <h1> OPEN Chat</h1>
-      <a href="/" class="btn btn-danger" type="button" id="btnLogout">Leave Chat</a>
+      <button class="btn btn-danger" type="button" id="btnLogout" onclick="logout()">Leave Chat</button>
     </header>
     <main class="chat-main">
       <div class="chat-sidebar">
@@ -26,6 +26,7 @@
         <ul id="users"></ul>
       </div>
       <div class="chat-messages" id="message-container">
+        <div class="show-time text-center"></div>
         <div class="inner-one">
           <p id="msg-sen"></p>
         </div>
@@ -51,18 +52,36 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
-
+    const roomDiv = document.getElementById('chat-sidebar');
     const chatForm = document.getElementById('chat-form');
+
     socket.on('message', message => {
       console.log(message);
     } )
 
+    //Message submit
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const msg = e.target.elements.message.value;
+
+      socket.emit(msg);
+    })
+
     var users = [];
     var roomname;
-    socket.on('connectToRoom', function (data) {
-      $('#room-name').append(`<p>${data}</p>`);
+
+    socket.on('connectToRoom', function (room) {
+      $('#room-name').append(`<p>${room}</p>`);
+     // document.querySelector('#room-name').appendChild(div);
      // return $('#room-name'); 
+    // document.body.innerHTML = '';
+     //document.write(`<p>${room}</p>`);
     });
+
+    socket.on('message', (welcomeMessage) => {
+      $('chat-form').append(`<span class="fas fa-comments">${welcomeMessage}</span>`);
+    } )
 
     function userLeave(id) {
       var index = users.findIndex(user => user.id === id);
@@ -84,11 +103,11 @@
           user: $('#name').val(),
           msg: $('#message').val()
         };
-        postChat(chatMessage)
+        outputMessage(chatMessage)
       })
     })
 
-    function postChat(chat) {
+    function outputMessage(chat) {
       $.post('http://localhost:3000/chats', chat)
       location.reload();
     }
@@ -102,12 +121,11 @@
       $('#btnLogout').click(() => {
         //localStorage.setItem('isLoggedIn', 'false');
         //localStorage.removeItem(user);
-        window.location = "./index.html";
+        
+        window.location = "../index.html";
+
       })
     }
-
-    const moment = require('moment');
-    const time = moment(chatObj.created_at)
 
     function addChat(chatObj) {
       $('#msg-sen').append(`<p class="meta"><b>${chatObj.user}</b> :${chatObj.msg} <span class="date">${chatObj.created_at}</span> <p> \n <br><hr>  `);
