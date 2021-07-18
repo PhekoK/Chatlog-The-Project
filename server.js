@@ -33,11 +33,11 @@ var roomno = 1;
 io.on('connection', (socket) => {
     console.log('New Socket is Connected');
 
-    //Welcomes current user
-    socket.emit('message', 'Welcome to OPEN Chat');
+    //Welcomes current user --> 
+    socket.emit('welcome-message', 'Welcome to OPEN Chat');
 
     //broadcast when a user connects
-    socket.broadcast.emit('message', 'A user has joined the room');
+    socket.broadcast.emit('join-message', 'A user has joined the room');
 
     //Increase roomno 2 clients are present in a room.
     if (io.sockets.adapter.rooms["room-" + roomno]

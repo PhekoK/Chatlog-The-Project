@@ -31,7 +31,7 @@
           <div id="noti-container"></div>
           <p id="msg-sen"></p>
         </div>
-     
+     <div id="notify-other-user"></div>
       </div>
     </main>
     <div class="chat-form-container">
@@ -55,10 +55,20 @@
     var socket = io();
     const roomDiv = document.getElementById('chat-sidebar');
     const chatForm = document.getElementById('chat-form');
+    //const messageEle = document.getElementById('message');
+    const joinMessageContainer = document.getElementById('notify-other-user');
 
-    socket.on('message', message => {
-      console.log(message);
-    } )
+    socket.on('welcome-message', data => {
+      console.log(data);
+      $('#noti-container').append(`--------------------------<p id="noti-container">${data}</p>---------------------------- <br>`);
+     
+    });
+
+    socket.on('join-message', data => {
+      //$('#notify-other-user').append(`<p id="join-message">------${data}------</p>`);
+      appendMessage(data);
+    
+    });
 
     //Message submit
     chatForm.addEventListener('submit', (e) => {
@@ -67,22 +77,22 @@
       const msg = e.target.elements.message.value;
 
       socket.emit(msg);
-    })
+    });
+
+    function appendMessage(message) {
+      const messageElement =  document.createElement('p')
+      messageElement.innerText  = "<<<<<<<" + message + ">>>>>>";
+      joinMessageContainer.append(messageElement)
+    }
 
     var users = [];
     var roomname;
 
     socket.on('connectToRoom', function (room) {
       $('#room-name').append(`<p>${room}</p>`);
-     // document.querySelector('#room-name').appendChild(div);
-     // return $('#room-name'); 
-    // document.body.innerHTML = '';
-     //document.write(`<p>${room}</p>`);
     });
 
-    socket.on('message', (welcomeMessage) => {
-      $('chat-form').append(`<span class="fas fa-comments">${welcomeMessage}</span>`);
-    } )
+    
 
     function userLeave(id) {
       var index = users.findIndex(user => user.id === id);

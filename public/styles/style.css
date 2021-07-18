@@ -29,6 +29,22 @@ body {
 	margin: 20px;
 }
 
+#noti-container{
+	text-align: center;
+	color: #333333;
+	text-decoration-style: wavy;
+	font-weight: bold;
+	font-stretch: wider;
+}
+
+#join-message{
+	text-align: center;
+	color: #333333;
+	text-decoration-style: wavy;
+	font-weight: bold;
+	font-stretch: wider;
+}
+
 ul {
 	list-style: none;
 }
