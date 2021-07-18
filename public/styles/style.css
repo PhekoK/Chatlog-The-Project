@@ -99,7 +99,7 @@ a {
 
 #msg-sen{
 	color: black;
-	background-color: lightgray;
+	background-color: white;
 }
 
 .inner-one{
@@ -155,12 +155,12 @@ a {
 }
 
 .chat-messages .message .meta span {
-	color: #777;
+	color: black;
 }
 
 .chat-form-container {
 	padding: 20px 30px;
-	background-color: darkgray;
+	background-color: lightgrey;
 }
 
 .chat-form-container form {

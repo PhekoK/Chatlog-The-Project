@@ -68,37 +68,65 @@ io.on('connection', (socket) => {
     });
 });
 
+/* GET ALL users listing. */
+app.get('/users', function(req, res, next) {
+    User.find((err, data) => {
+      if (err) throw err;
+      res.send(data);
+      /* res.render('../views/users/users', 
+          { title: 'User List', users: data }
+      ); */
+    });
+  });
+
+  app.get('/login', function(req, res, next) {
+    User.find((err, data) => {
+      if (err) throw err;
+      res.send(data);
+    });
+  });
+
+  /* GET One users listing. */
+app.post('/login', function(req, res, next) {
+    var email = req.body.email;
+    var password = req.body.password
+    User.find((err, data) => {
+      if (err) throw err;
+      
+      for (const user in data){
+        if(user.email == email && user.password == password){
+           return res.send(data);
+         }
+          if(!(user.email == email && user.password == password)){
+              return res.status(404).json("User with given password does not exit");
+          } 
+          
+      }
+      
+      /* res.render('../views/users/users', 
+          { title: 'User List', users: data }
+      ); */
+    });
+  });
+
 //-------------USERS-----------------------
 //User Registration
 app.post('/users', (req, res) => {
     //console.log(req.body);
     User.create(req.body, (err) => {
         if (err) throw err;
-        //io.emit('user', req.body);
         console.log(req.body);
         console.log("User Registered Successfully");
     })
 
-})
+});
 
-
+//------------------LOgin-------------
 //User Login
-app.post('users/', (req, res) => {
+app.post('/login', (req, res) => {
     console.log(req.body);
 
-    User.find((err, data) => {
-        console.log(req.body);
-        if (err) throw err;
-        for (const user of data) {
-            var email = req.body.email;
-            var password = req.body.password;
-            if (user.email == email && user.password == password) {
-                res.status(200).json({ "found": true });
-            } else {
-                res.status(200).json({ "found": false })
-            }
-        }
-    })
+    
 });
 
 /* app.post('/users/login', function (req, res) {

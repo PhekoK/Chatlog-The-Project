@@ -98,8 +98,8 @@
 
         function loginUser(user) {
             //console.log(user);
-            $.post('http://localhost:3000/users', this.user);
-            location.reload();
+            $.post('http://localhost:3000/login', user);
+            window.location = "views/chat.html";
         }
 
 
