@@ -52,6 +52,11 @@
   <script>
     var socket = io();
 
+    const chatForm = document.getElementById('chat-form');
+    socket.on('message', message => {
+      console.log(message);
+    } )
+
     var users = [];
     var roomname;
     socket.on('connectToRoom', function (data) {
@@ -101,9 +106,13 @@
       })
     }
 
+    const moment = require('moment');
+    const time = moment(chatObj.created_at)
+
     function addChat(chatObj) {
-      $('#msg-sen').append(`<p><b>${chatObj.user}</b> :${chatObj.msg} <span class="date">${chatObj.created_at}</span> <p> \n <br><hr>  `);
-    }
+      $('#msg-sen').append(`<p class="meta"><b>${chatObj.user}</b> :${chatObj.msg} <span class="date">${chatObj.created_at}</span> <p> \n <br><hr>  `);
+      // $('#msg-sen').append(`<p class="meta">${chatObj.user}<span>${chatObj.created_at}</span> </p><p class="text" ${chatObj.msg} </p> `)
+      }
   </script>
 </body>
 

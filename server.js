@@ -14,10 +14,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 /* app.use(express.static(__dirname));
  */
 
-//var indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/users');
-//var chatsRouter = require('./routes/chats');
-
 //Models
 var User = require('./Models/User');
 var Chat = require('./Models/Chat');
@@ -32,7 +28,13 @@ mongoose.connect('mongodb://localhost:27017/projectdb',
 users = [];
 var roomno = 1;
 io.on('connection', (socket) => {
-    console.log('A Socket is Connected');
+    console.log('New Socket is Connected');
+
+    //Welcomes current user
+    socket.emit('message', 'Welcome to OPEN Chat');
+
+    //broadcast when a user connects
+    socket.broadcast.emit('message', 'A user has joined the room');
 
     //Increase roomno 2 clients are present in a room.
     if (io.sockets.adapter.rooms["room-" + roomno]
@@ -56,33 +58,18 @@ io.on('connection', (socket) => {
 
     // Invoked when user gets diconnected
     socket.on('disconnect', () => {
-        /* var user = userLeave(socket.id);
-
-        if (user) {
-            io.to(user.room).emit(
-                'message', 
-                formatMessage("OPEN Chat", `${user.username} has left the chat`)
-            )
-        } */
-        console.log('A Socket is Disconnected!!!');
+        io.emit('message', 'A user has left the room');
     });
 });
 
-/* GET ALL users listing. */
-app.get('/users', function(req, res, next) {
-    User.find((err, data) => {
-      if (err) throw err;
-      res.send(data);
-      /* res.render('../views/users/users', 
-          { title: 'User List', users: data }
-      ); */
-    });
-  });
+//------------------------------------------------------------------------
 
+//testing
   app.get('/login', function(req, res, next) {
     User.find((err, data) => {
       if (err) throw err;
       res.send(data);
+
     });
   });
 
@@ -93,19 +80,18 @@ app.post('/login', function(req, res, next) {
     User.find((err, data) => {
       if (err) throw err;
       
-      for (const user in data){
-        if(user.email == email && user.password == password){
+      //for (const User in data){
+        if(User.email == email && User.password == password){
+            console.log("Logged in");
            return res.send(data);
          }
-          if(!(user.email == email && user.password == password)){
+          if(!(User.email == email && User.password == password)){
+              console.log("Not Logged in");
               return res.status(404).json("User with given password does not exit");
           } 
           
-      }
+     // }
       
-      /* res.render('../views/users/users', 
-          { title: 'User List', users: data }
-      ); */
     });
   });
 
@@ -115,21 +101,34 @@ app.post('/users', (req, res) => {
     //console.log(req.body);
     User.create(req.body, (err) => {
         if (err) throw err;
+        //io.emit('user', req.body);
         console.log(req.body);
         console.log("User Registered Successfully");
     })
 
-});
+})
 
-//------------------LOgin-------------
+
 //User Login
-app.post('/login', (req, res) => {
+/* app.post('/login', (req, res) => {
     console.log(req.body);
 
-    
-});
+    User.find((err, data) => {
+        console.log(req.body);
+        if (err) throw err;
+        for (const user of data) {
+            var email = req.body.email;
+            var password = req.body.password;
+            if (user.email == email && user.password == password) {
+                res.status(200).json({ "found": true });
+            } else {
+                res.status(200).json({ "found": false })
+            }
+        }
+    })
+}); */
 
-/* app.post('/users/login', function (req, res) {
+/* app.post('/login', function (req, res) {
     console.log("This has run");
     console.log(req.body);
     User.find((err, data) => {
@@ -137,8 +136,8 @@ app.post('/login', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
         if( err) throw err;
-        data.forEach(user => {
-            if (user.email == email && user.password == password){
+        data.forEach(User => {
+            if (User.email == email && User.password == password){
                 res.status(200).json({"found": "yes"});
                 //res.redirect("/views/chat.html");
             } else {

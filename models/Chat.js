@@ -7,7 +7,7 @@ var chatSchema = new mongoose.Schema({
         required: true
     },
     created_at: {
-        type: Date,
+        type:  Date,
         default: Date.now
     }
 }, { versionKey: false });
