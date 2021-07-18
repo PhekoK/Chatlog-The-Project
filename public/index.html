@@ -84,20 +84,21 @@
    < <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-
-        //Validate user
-
+        
         $(() => {
+            
             $('#btnLogin').click(() => {
-                var checkExiUser = {
+                var newUser = {
                     email: $('#txtEmail').val(),
                     password: $('#txtPassword').val()
                 };
-                userLogin(checkExiUser);
+                console.log("I ran:)");
+                userLogin(newUser);
             })
         })
 
         function userLogin(user) {
+            console.log("UserLogin Function Ran");
             $.post('http://localhost:3000/login', user)
             window.location = "/views/chat.html";
         }

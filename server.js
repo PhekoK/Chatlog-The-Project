@@ -96,6 +96,7 @@ app.post('/login', function(req, res) {
     
     console.log(req.body);
     
+    
     //let { email, password } = req.body;
 
     var email = req.body.email;
@@ -132,6 +133,8 @@ app.post('/login', function(req, res) {
             })
         })
     }
+
+    console.log("I also ran.. fast");
 
 
 });
